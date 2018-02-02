@@ -1,0 +1,52 @@
+1.获取元数据(描述数据的数据)
+ResultSetMetaData:是描述ResultSet的元数据
+即从中可以获取到结果集中有多少列,列名...
+ResultSet.getMetaData()获取ResultSetMetaData对象
+int getColumnCount():sql语句中包含哪些列
+String getColumnLabel(int column):获取指定的列的别名.索引从1开始
+
+2.事务的隔离级别
+同时开启多个事务,当这些事务访问数据库中相同的数据时,如果没有采用隔离机制,会导致并发问题
+(1)脏读:(读未提交)t1读取t2想更新还未提交的字段.若t2回滚,t1读取的数据是无效的
+(2)不可重复读:两个事务t1,t2.t1读取一个字段,t2更新,t1再读,值改变
+(3)幻读:t1读取后,t2插入新行,数据库表行数改变.
+
+3.数据库的隔离级别:安全性由低到高,效率从高到低
+(1)read uncommited:读未提交数据.
+允许事务读取未被其他事务提交的变更.脏读,不可重复读,幻读均可能出现
+(2)read commited:读已提交
+只允许事务读取已经被其它事务提交的变更,可避免脏读,但不可重复读和幻读仍可能出现
+(3)repeatable read:可重复读
+确保事务可以多次从一个字段中读取相同的值,在这个事务持续期间,禁止其它事务对这个字段更新.
+可避免脏读和不可重复读,但幻读仍可能出现
+(4)serializable:串行化.同时只能有一个事务操作表中的相同行,可避免所有并发问题,效率低下
+
+Oracle支持两种事务隔离级别:默认是read commited
+read commited:读已提交
+serializable:串行化
+
+MySql支持4种事务隔离机制:默认是repeatable read
+
+4.批量处理jdbc语句提高处理速度
+需要插入或更新时,采用java的批量更新机制
+这一机制允许 多条语句一次性提交给数据库批量处理
+
+addBatch(String sql):需要批量处理的sql语句或参数
+executeBatch():执行批量处理语句
+常见两种批量执行sql的情况
+(1)多条sql语句的批量处理
+(2)一个sql的批量传参
+
+JdbcTools里添加提交,回滚,开始事务方法
+
+5.Statement的两个子接口
+CallableStatement
+PreparedStatement
+
+
+
+
+
+
+
+ 	
